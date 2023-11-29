@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Reportes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+<style>
+
+    body {
+        margin-top: 50px;
+        font-family: calibri;        
+    }
+    .container {
+        margin-top: 80px; 
+    } 
+    .square-card {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .chart {
+        width: 100%; 
+        margin-bottom: 20px;
+    }
+
+    .custom-card {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .custom-card-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    .espacio{
+        margin-right:2rem;
+    }
+
+    .btn-warning {
+        background-color: #fd7e14 !important;
+        border-color: #fd7e14 !important;
+        color: white !important;
+        font-weight: bold !important;
+    }
+
+
+    .btn-warning:hover {
+        background-color: white !important;
+        color: black !important;
+        font-weight: bold !important; 
+    }
+    .navbar-warning {
+        background-color: #fd7e14 !important;
+        padding: 0.35rem 2rem;
+    
+    }
+    
+    .navbar-warning a{
+        color: #8F6514 !important;
+        padding: 0.35rem 2rem;
+    
+    }
+
+    .main-footer {
+        background-color: #f8f9fa;
+        padding: 10px;
+        color: #495057;
+      }
+      
+    .footer-content {
+        display: flex;
+        align-items: center;
+    }
+      
+    
+
+
+    @media (max-width: 767px) {
+        .responsive-img {
+            max-width: 40%; 
+            margin-top: 1rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-warning bg-warning fixed-top">
+        <a class="navbar-brand" href="{% url 'admin:index' %}">Ensueño</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </nav>
+    
+    <div class="container ">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>DASHBOARD - REPORTES</h1>
+        <a href="{% url 'admin:index' %}" class="btn btn-warning">Ensueño</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-12 mb-3">
+            <div class="card h-100 border-0 rounded shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-3"><strong>TOTAL DE RESERVAS</strong></h5>
+                    <p class="card-text display-4">{{ total_reservas }}</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-4 col-12 mb-3">
+            <div class="card h-100 border-0 rounded shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-3"><strong>N° DE USUARIOS</strong></h5>
+                    <p class="card-text display-4">{{ total_usuarios }}</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-4 col-12 mb-3">
+            <div class="card h-100 border-0 rounded shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-3"><strong>TOTAL DE TESTIMONIOS</strong></h5>
+                    <p class="card-text display-4">{{ total_testimonios }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chart-container mt-2">
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <h5 class="card-title custom-card-title text-center p-3 mb-0">AMBIENTES MÁS RESERVADOS</h5>
+                    <div class="chart d-flex justify-content-center align-items-center" style="height: 325px;">
+                        <canvas id="ambientesChart" style="max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h5 class="card-title custom-card-title text-center p-3">EVENTOS MÁS RESERVADOS </h5>
+                    <div class="chart" style="width: 615px; max-width: 100%; height: 285px;">
+                        <canvas id="eventosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta de CATEGORÍAS -->
+            
+            <div class="col-md-6">
+                <div class="card custom-card mt-2">
+                    <div class="card-body">
+                        <h5 class="card-title custom-card-title text-center">CATEGORÍAS</h5>
+                    </div>
+                    <div class="row text-center p-2">
+                        {% for categoria in categorias %}
+                        <div class="col-md-6 mb-3 {% if forloop.last and categorias|length is odd %}center-last-image{% endif %}">
+                            <div class="card h-100">
+                                <img src="{{ categoria.img.url }}" class="card-img-top mx-auto img-fluid responsive-img" alt="{{ categoria.nombre }}" style="object-fit: cover; width: 100%;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ categoria.nombre }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="col-md-6">
+                <div class="card custom-card  mt-2">
+                    <h5 class="card-title custom-card-title text-center p-3">CATEGORÍAS MÁS POPULARES</h5>
+                    <div class="chart mb-3" style="height: 294px;"> 
+                        <canvas id="categoriasChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mt-2">
+                    <h5 class="card-title custom-card-title text-center p-3">TOTAL DE MESAS POR AMBIENTE</h5>
+                    <div class="chart borde" style="height: 300px;"> 
+                        <canvas id="mesasPorAmbienteChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card custom-card mt-2">
+                    <h5 class="card-title custom-card-title text-center p-3">RESERVAS POR MES</h5>
+                    <div class="chart mb-3" style="height: 300px;">
+                        <canvas id="reservasPorMesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="main-footer mt-4">
+    <div class="footer-content">
+      <strong>Copyright @ 2023 Ensueño. </strong>
+      <div class="rights-reserved">
+        <span> Todos los derechos reservados</span>
+      </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    Chart.defaults.locale = 'es';
+    document.addEventListener('DOMContentLoaded', function() {
+        function createDoughnutChart(canvasId, labels, data, label) {
+            var ctx = document.getElementById(canvasId).getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(128, 0, 128, 0.8)',
+                            'rgba(204, 85, 0, 0.8)',
+                            'rgba(0, 128, 0, 0.8)',
+                        ],
+                    }],
+                },
+            });
+        }
+        function createBarChart(canvasId, labels, data, label, backgroundColors) {
+            var ctx = document.getElementById(canvasId).getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: 'rgba(255, 165, 0, 0.8)',
+                        borderWidth: 0.5,
+                    }],
+                },
+            });
+        }
+
+        function createLineChart(canvasId, labels, data, label, borderColor) {
+            var ctx = document.getElementById(canvasId).getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        borderColor: borderColor,
+                        borderWidth:1,
+                        fill: false,
+                    }],
+                },
+                options: {
+                    scales: {
+                        x: {
+                            barPercentage:0.8,
+                        },
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+        
+                },
+            });
+        }
+        var dataAmbientes = {{ data_ambientes|safe }};
+        var labelsAmbientes = dataAmbientes.map(item => item.label);
+        var dataAmbientesCount = dataAmbientes.map(item => item.data);
+        createDoughnutChart('ambientesChart', labelsAmbientes, dataAmbientesCount, 'Ambientes más reservados');
+
+        var dataCategorias = {{ data_categorias|safe }};
+        var labelsCategorias = dataCategorias.map(item => item.label);
+        var dataCategoriasCount = dataCategorias.map(item => item.data);
+        var backgroundColorsCategorias = Array.from({ length: dataCategoriasCount.length }, () => getRandomColor());
+        createBarChart('categoriasChart', labelsCategorias, dataCategoriasCount, 'Categorías más populares', backgroundColorsCategorias);
+
+  
+        var dataEventos = {{ data_eventos|safe }};
+        var labelsEventos = dataEventos.map(item => item.label);
+        var dataEventosCount = dataEventos.map(item => item.data);
+        var backgroundColorsEventos = Array.from({ length: dataEventosCount.length }, () => getRandomColor());
+        createBarChart('eventosChart', labelsEventos, dataEventosCount, 'Eventos más reservados', backgroundColorsEventos);
+
+       
+        var dataMesasPorAmbiente = {{ data_mesas_por_ambiente|safe }};
+        var labelsMesasPorAmbiente = {{ labels_mesas_por_ambiente|safe }};
+        createLineChart('mesasPorAmbienteChart', labelsMesasPorAmbiente, dataMesasPorAmbiente, ' Mesas por Ambiente', getRandomColor());
+
+        var dataReservasPorMes = {{ data_reservas_por_mes|safe }};
+        var labelsReservasPorMes = {{ labels_reservas_por_mes|safe }};
+        createBarChart('reservasPorMesChart', labelsReservasPorMes, dataReservasPorMes, 'Reservas por Mes', getRandomColor());
+        
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    });
+</script>
+
+
+</body>
