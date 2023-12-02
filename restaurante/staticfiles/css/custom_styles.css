@@ -1,0 +1,11 @@
+/* Cambiar el fondo y el color de fuente del widget de gráfico */
+.widget-my_custom_chart_widget {
+    background-color: #F0F0F0;
+    color: #333;
+}
+
+/* Estilo para el título del widget */
+.widget-my_custom_chart_widget h2 {
+    color: #0077B6;
+    font-size: 18px;
+}
