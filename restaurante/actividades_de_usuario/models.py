@@ -6,7 +6,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import uuid
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.hashers import check_password
 
 class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
@@ -30,7 +29,6 @@ class Usuario(models.Model):
 
     class Meta:
         verbose_name_plural = "Usuarios"
-
 
 @receiver(post_save, sender=Usuario)
 def crear_token(sender, instance, created, **kwargs):

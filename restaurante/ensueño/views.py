@@ -12,7 +12,8 @@ from .serializers import *
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.hashers import check_password
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 
 class AmbienteListCreateView(generics.ListCreateAPIView):
     queryset = Ambiente.objects.all()
@@ -63,6 +64,9 @@ class MenuDiarioDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MenuDiarioSerializer
     
 
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+
+
 class UsuarioListCreateView(ListCreateAPIView):
     serializer_class = UsuarioSerializer
 
@@ -81,16 +85,30 @@ class UsuarioListCreateView(ListCreateAPIView):
             return Response({'token': usuario.token}, status=status.HTTP_201_CREATED)
         except IntegrityError:
             return Response({'error': 'El usuario ya existe.'}, status=status.HTTP_400_BAD_REQUEST)
-class UsuarioDetailView(RetrieveAPIView):
+
+class UsuarioDetailView(RetrieveUpdateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
     def get_object(self):
-       
         token = self.kwargs.get('token', None)
         if token:
             return get_object_or_404(Usuario, token=token)
         return super().get_object()
+
+    def put(self, request, *args, **kwargs):
+        token = self.kwargs.get('token', None)
+        usuario = self.get_object()
+
+        password = request.data.get('password')
+        if password:
+            request.data['password'] = make_password(password)
+
+        serializer = self.get_serializer(usuario, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ReservaListCreateView(generics.ListCreateAPIView):
     serializer_class = ReservaSerializer
@@ -103,12 +121,9 @@ class ReservaListCreateView(generics.ListCreateAPIView):
         else:
             return Reserva.objects.all()
 
-
 class ReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reserva.objects.all()
     serializer_class = ReservaSerializer
-
-
 
 class TestimonioListCreateView(generics.ListCreateAPIView):
     serializer_class = TestimonioSerializer
@@ -126,8 +141,6 @@ class TestimonioDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TestimonioSerializer
 
     
-
-
 class FavoritoListCreateView(generics.ListCreateAPIView):
     serializer_class = FavoritoSerializer
 
@@ -142,7 +155,6 @@ class FavoritoListCreateView(generics.ListCreateAPIView):
 class FavoritoDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Favorito.objects.all()
     serializer_class = FavoritoSerializer
-
 
 
 class MenuCartaListCreateView(generics.ListCreateAPIView):
@@ -162,9 +174,15 @@ class PagoDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PagoSerializer
     
 class GaleriaListCreateView(generics.ListCreateAPIView):
-    queryset = Galeria.objects.all()
-    serializer_class = GaleriaSerializer  
-      
+    serializer_class = GaleriaSerializer
+
+    def get_queryset(self):
+        tipo = self.kwargs.get('tipo', None)
+        if tipo:
+            return Galeria.objects.filter(tipo=tipo)
+        return Galeria.objects.all()
+
+
 class GaleriaDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Galeria.objects.all()
     serializer_class = GaleriaSerializer
@@ -194,7 +212,26 @@ class MenuDiarioListView(generics.ListAPIView):
             queryset = MenuDiario.objects.all()
         return queryset
 
-    
+class ReservaListCreateView(generics.ListCreateAPIView):
+    serializer_class = ReservaSerializer
+
+    def get_queryset(self):
+        nom_cliente_id = self.kwargs.get('nom_cliente')
+        estado = self.kwargs.get('estado')
+
+        queryset = Reserva.objects.all()
+
+        if nom_cliente_id:
+            queryset = queryset.filter(nom_cliente=nom_cliente_id)
+        
+        if estado:
+            queryset = queryset.filter(estado=estado)
+
+        return queryset
+
+class ReservaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reserva.objects.all()
+    serializer_class = ReservaSerializer   
 
 class LoginView(APIView):
     serializer_class = LoginSerializer
@@ -213,9 +250,10 @@ class LoginView(APIView):
             print("Usuario no encontrado")
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user.check_password(password):
+        if check_password(password, user.password):
             print("Contraseña válida")
             return Response({'token': str(user.token)})
         else:
-            print(f"Contraseña incorrecta. Contraseña esperada: {user.password}, Contraseña proporcionada: {password}")
+            print(f"Contraseña incorrecta.")
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+
