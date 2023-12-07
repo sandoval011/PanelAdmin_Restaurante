@@ -55,7 +55,6 @@ JAZZMIN_SETTINGS = {
     "related_modal_active": True,
     "navigation_icons": "smart",
     "custom_dashboard": "reportes.dashboard_admin.MyCustomDashboard",
-    "css_file": "css/custom_styles.css",
     "site_title": "En sueño",
     "site_header": "En sueño",
     "site_brand": "En sueño",
@@ -239,9 +238,7 @@ MEDIA_URL = "/media/"
 
 STATIC_URL = "/static/"
 # STATICFILES_DIRS=[BASE_DIR / 'static, "vendor", "adminlte"']
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
+
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
