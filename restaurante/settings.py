@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-bn_x$=on8z1c#3gu87s7bme84ql281%-9sv63z_f_i=rck+46+
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app','now.sh','127.0.0.1','localhost']
 
 
 
@@ -203,7 +203,16 @@ WSGI_APPLICATION = 'restaurante.wsgi.application'
 #     }
 # }
 
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '2F6f23FC5646*ACa1e*geEBag-eb6*CB',
+        'HOST': 'monorail.proxy.rlwy.net',
+        'PORT': '26258',
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -235,10 +244,12 @@ MEDIA_URL = '/media/'
 
 
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 #STATICFILES_DIRS=[BASE_DIR / 'static, "vendor", "adminlte"']
 
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
