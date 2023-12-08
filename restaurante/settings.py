@@ -159,6 +159,7 @@ JAZZMIN_UI_TWEAKS = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -169,7 +170,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'restaurante.urls'
 
 TEMPLATES = [
@@ -244,7 +245,7 @@ MEDIA_URL = '/media/'
 
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 #STATICFILES_DIRS=[BASE_DIR / 'static, "vendor", "adminlte"']
 
 STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
