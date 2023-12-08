@@ -240,7 +240,7 @@ STATIC_URL = "/static/"
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -249,4 +249,5 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
 CELERY_IMPORTS = ("actividades_de_usuario.tasks",)
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "10.0.2.2"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "10.0.2.2", "paneladministrativo-restaurante.onrender.com"]
+
