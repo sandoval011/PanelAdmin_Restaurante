@@ -169,6 +169,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+WHITENOISE = {
+    # ... otras configuraciones ...
+    'ignore_missing': True,
+    'minify_js': False,
+    'minify_css': False,
+}
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'restaurante.urls'
@@ -193,27 +199,27 @@ WSGI_APPLICATION = 'restaurante.wsgi.application'
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'bdrestauranteintegrador',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': '2F6f23FC5646*ACa1e*geEBag-eb6*CB',
-        'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '26258',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bdrestauranteintegrador',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': '2F6f23FC5646*ACa1e*geEBag-eb6*CB',
+#         'HOST': 'monorail.proxy.rlwy.net',
+#         'PORT': '26258',
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
