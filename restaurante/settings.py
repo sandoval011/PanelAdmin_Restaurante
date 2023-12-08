@@ -15,8 +15,8 @@ from django.utils.translation import gettext as _
 from django.contrib import admin
 from django.urls import reverse_lazy
 import dj_database_url
-
 ALLOWED_HOSTS = []
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -26,8 +26,6 @@ DEBUG = "RENDER" not in os.environ
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
-ALLOWED_HOSTS = []
 
 WHITENOISE_USE_FINDERS = False
 WHITENOISE_USE_CDN = False
