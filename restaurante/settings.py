@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-bn_x$=on8z1c#3gu87s7bme84ql281%-9sv63z_f_i=rck+46+
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -192,16 +192,16 @@ WSGI_APPLICATION = 'restaurante.wsgi.application'
 
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bdrestauranteintegrador',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'bdrestauranteintegrador',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 
 
@@ -237,13 +237,8 @@ MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
 #STATICFILES_DIRS=[BASE_DIR / 'static, "vendor", "adminlte"']
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  
-    os.path.join(BASE_DIR, "static", "vendor", "adminlte"),  
-]
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
