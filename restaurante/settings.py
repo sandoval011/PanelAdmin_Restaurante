@@ -27,9 +27,6 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-WHITENOISE_USE_FINDERS = False
-WHITENOISE_USE_CDN = False
-
 
 INSTALLED_APPS = [
     "corsheaders",
@@ -164,7 +161,6 @@ JAZZMIN_UI_TWEAKS = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -235,13 +231,11 @@ MEDIA_URL = "/media/"
 
 
 STATIC_URL = "/static/"
-# STATICFILES_DIRS=[BASE_DIR / 'static, "vendor", "adminlte"']
-
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Agregamos esta línea para especificar la carpeta de archivos estáticos
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
